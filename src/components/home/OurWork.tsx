@@ -1,67 +1,95 @@
-import styles from "../../styles/home.module.css";
+"use client";
+
+import Image from "next/image";
 
 const works = [
   {
     title: "FYDE",
     desc: "Visuals were curated to evoke a sense of avant-garde sophistication.",
     variant: "light",
+    image: "/fyde.png",
   },
   {
     title: "FYDE",
     desc: "Visuals were curated to evoke a sense of avant-garde sophistication.",
     variant: "dark",
+    image: "/fyde2.PNG",
   },
   {
     title: "FYDE",
     desc: "Visuals were curated to evoke a sense of avant-garde sophistication.",
     variant: "dark",
+    image: "/brin.JPG",
   },
   {
     title: "FYDE",
     desc: "Visuals were curated to evoke a sense of avant-garde sophistication.",
     variant: "light",
+    image: "/fyde3.jpg",
   },
 ];
 
 export default function OurWork() {
   return (
-    <section className={styles.workSection}>
+    <section className="bg-black px-6 py-[120px]">
       {/* HEADER */}
-      <div className={styles.workHeader}>
+      <div className="max-w-[1200px] mx-auto mb-[60px] flex justify-between items-end gap-10">
         <div>
-          <span className={styles.sectionTag}>Our Works</span>
-          <h2>Latest Works</h2>
+          <div className="flex items-center gap-3 mb-6">
+            <Image src="/logo.png" alt="Services icon" width={18} height={18} />
+            <span className="text-xl tracking-widest text-gray-300">
+              Our Work
+            </span>
+          </div>
+          <h2 className="text-[60px] mt-3 text-white font-normal">
+            Latest Works
+          </h2>
         </div>
 
-        <p>
+        <p className="max-w-[420px] text-[#bdbdbd] text-sm">
           We craft digital experiences from idea to launch — blending strategy,
           design, and engineering to build products that perform.
         </p>
       </div>
 
       {/* GRID */}
-      <div className={styles.workGrid}>
+      <div className="max-w-[1200px] mx-auto grid grid-cols-2 gap-8">
         {works.map((item, index) => (
-          <div key={index} className={styles.workCard}>
-            <div
-              className={`${styles.workImage} ${
-                item.variant === "dark" ? styles.darkCard : styles.lightCard
-              }`}
-            >
-              {/* Placeholder UI */}
-              <div className={styles.mockUi}></div>
+          <div
+            key={index}
+            className="bg-white/[0.03] border border-white/[0.08] rounded-[20px] p-5
+                       transition-all duration-300 hover:-translate-y-1.5 hover:border-[#5da9ff]"
+          >
+            {/* IMAGE */}
+            <div className="h-[450px] rounded-[14px] mb-4 overflow-hidden">
+              <Image 
+                src={item.image} 
+                alt={item.title} 
+                width={400} 
+                height={250} 
+                className="w-full h-full object-cover"
+                  style={{ objectPosition: "center 65%" }}
+              />
             </div>
 
-            <h3>{item.title}</h3>
-            <p>{item.desc}</p>
+            {/* TEXT */}
+            <h3 className="text-lg mb-1.5 text-white">{item.title}</h3>
+            <p className="text-[13px] text-[#bdbdbd]">{item.desc}</p>
           </div>
         ))}
       </div>
 
       {/* VIEW ALL */}
-      <button className={styles.viewAll}>
-        View All <span>→</span>
-      </button>
+      <div className="max-w-[1200px] mx-auto">
+        <button
+          className="mt-[60px] flex items-center gap-2 bg-transparent
+                     border border-white/40 text-white
+                     px-[22px] py-[10px] rounded-full
+                     transition-all hover:bg-white hover:text-black"
+        >
+          View All <span>→</span>
+        </button>
+      </div>
     </section>
   );
 }
