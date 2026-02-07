@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef } from "react";
 import { FiArrowRight } from "react-icons/fi";
 
 interface Trail {
@@ -24,12 +24,11 @@ function HeroMouseEffect() {
       const mouseY = e.clientY;
       if (heroRef.current) {
         const rect = heroRef.current.getBoundingClientRect();
-        const isInside = (
+        const isInside =
           mouseX >= rect.left &&
           mouseX <= rect.right &&
           mouseY >= rect.top &&
-          mouseY <= rect.bottom
-        );
+          mouseY <= rect.bottom;
         setIsInsideHero(isInside);
         if (isInside) {
           const now = Date.now();
@@ -41,7 +40,7 @@ function HeroMouseEffect() {
               timestamp: now,
             };
 
-            setTrails(prev => {
+            setTrails((prev) => {
               const updated = [...prev, newTrail];
               if (updated.length > 3) {
                 return updated.slice(1);
@@ -61,13 +60,13 @@ function HeroMouseEffect() {
 
     const cleanupInterval = setInterval(() => {
       const now = Date.now();
-      setTrails(prev => prev.filter(t => now - t.timestamp < 500));
+      setTrails((prev) => prev.filter((t) => now - t.timestamp < 500));
     }, 100);
 
-    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener("mousemove", handleMouseMove);
 
     return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener("mousemove", handleMouseMove);
       clearInterval(cleanupInterval);
     };
   }, []);
@@ -76,32 +75,33 @@ function HeroMouseEffect() {
     <>
       {/* Hero section reference - full width */}
       <div ref={heroRef} className="absolute inset-0 w-full" />
-      {isInsideHero && trails.map((trail, index) => {
-        const age = Date.now() - trail.timestamp;
-        const opacity = Math.max(0, 0.8 - (age / 500) * 0.8);
-        const scale = 1 - (index / trails.length) * 0.4;
+      {isInsideHero &&
+        trails.map((trail, index) => {
+          const age = Date.now() - trail.timestamp;
+          const opacity = Math.max(0, 0.8 - (age / 500) * 0.8);
+          const scale = 1 - (index / trails.length) * 0.4;
 
-        return (
-          <div
-            key={trail.id}
-            style={{
-              position: 'fixed',
-              left: trail.x,
-              top: trail.y,
-              width: '50px',
-              height: '50px',
-              backgroundColor: '#374151',
-              opacity: opacity,
-              transform: `translate(-50%, -50%) scale(${scale})`,
-              transition: 'opacity 0.2s ease-out, transform 0.2s ease-out',
-              borderRadius: '',
-              boxShadow: `0 0 60px 30px rgba(55, 65, 91, ${opacity * 0.7})`,
-              zIndex: 9999,
-              pointerEvents: 'none',
-            }}
-          />
-        );
-      })}
+          return (
+            <div
+              key={trail.id}
+              style={{
+                position: "fixed",
+                left: trail.x,
+                top: trail.y,
+                width: "50px",
+                height: "50px",
+                backgroundColor: "#374151",
+                opacity: opacity,
+                transform: `translate(-50%, -50%) scale(${scale})`,
+                transition: "opacity 0.2s ease-out, transform 0.2s ease-out",
+                borderRadius: "",
+                boxShadow: `0 0 60px 30px rgba(55, 65, 91, ${opacity * 0.7})`,
+                zIndex: 9999,
+                pointerEvents: "none",
+              }}
+            />
+          );
+        })}
     </>
   );
 }
@@ -116,7 +116,7 @@ function AnimatedIdeasText() {
     if (animationTimeoutRef.current) {
       clearTimeout(animationTimeoutRef.current);
     }
-    
+
     setIsHovered(true);
     setIsAnimating(true);
   };
@@ -126,12 +126,12 @@ function AnimatedIdeasText() {
     if (animationTimeoutRef.current) {
       clearTimeout(animationTimeoutRef.current);
     }
-    
+
     animationTimeoutRef.current = setTimeout(() => {
       setIsAnimating(false);
-    }, 300); 
+    }, 300);
   };
-  
+
   useEffect(() => {
     return () => {
       if (animationTimeoutRef.current) {
@@ -142,48 +142,48 @@ function AnimatedIdeasText() {
 
   return (
     <span className="group inline-block relative">
-      <div 
+      <div
         className="inline-block px-8 py-3 rounded-full relative overflow-hidden transition-all duration-300 cursor-pointer"
-        style={{ 
-          border: `1px solid ${isHovered ? '#3b82f6' : '#99CCFF'}`, // blue-500 on hover
-          boxShadow: isHovered 
-            ? "0 0 25px rgba(59, 130, 246, 0.3)" 
+        style={{
+          border: `1px solid ${isHovered ? "#3b82f6" : "#99CCFF"}`, // blue-500 on hover
+          boxShadow: isHovered
+            ? "0 0 25px rgba(59, 130, 246, 0.3)"
             : "0 0 20px rgba(153, 204, 255, 0.1)",
-          backgroundColor: isHovered ? "rgba(59, 130, 246, 0.15)" : "transparent", // blue-500
-          transition: "all 0.3s ease"
+          backgroundColor: isHovered
+            ? "rgba(59, 130, 246, 0.15)"
+            : "transparent", // blue-500
+          transition: "all 0.3s ease",
         }}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
         {/* Text Container with proper height and alignment */}
-        <div 
-          className="relative h-[50px] w-[170px] flex items-center justify-center overflow-hidden"
-        >
+        <div className="relative h-[50px] w-[170px] flex items-center justify-center overflow-hidden">
           {/* Current Text - Slides Up on hover */}
           <span
             className="absolute inset-0 flex items-center justify-center text-white transition-all duration-300"
             style={{
-              transform: isHovered ? 'translateY(-100%)' : 'translateY(0%)',
+              transform: isHovered ? "translateY(-100%)" : "translateY(0%)",
               opacity: isHovered ? 0 : 1,
-              fontSize: '3.75rem',
-              fontWeight: '500',
-              lineHeight: '1',
-              letterSpacing: '2.5px'
+              fontSize: "3.75rem",
+              fontWeight: "500",
+              lineHeight: "1",
+              letterSpacing: "2.5px",
             }}
           >
             Ideas
           </span>
-          
+
           {/* New Text - Enters from Bottom on hover */}
           <span
             className="absolute inset-0 flex items-center justify-center text-white transition-all duration-300"
             style={{
-              transform: isHovered ? 'translateY(0%)' : 'translateY(100%)',
+              transform: isHovered ? "translateY(0%)" : "translateY(100%)",
               opacity: isHovered ? 1 : 0,
-              fontSize: '3.75rem',
-              fontWeight: '500',
-              lineHeight: '1',
-              letterSpacing: '2.5px'
+              fontSize: "3.75rem",
+              fontWeight: "500",
+              lineHeight: "1",
+              letterSpacing: "2.5px",
             }}
           >
             Ideas
@@ -191,18 +191,18 @@ function AnimatedIdeasText() {
         </div>
 
         {/* Hover effect overlay */}
-        <span 
+        <span
           className="absolute inset-0 rounded-full transition-all duration-300 pointer-events-none"
-          style={{ 
-            background: isHovered 
-              ? "linear-gradient(135deg, rgba(59, 130, 246, 0.2) 0%, rgba(96, 165, 250, 0.1) 100%)" 
+          style={{
+            background: isHovered
+              ? "linear-gradient(135deg, rgba(59, 130, 246, 0.2) 0%, rgba(96, 165, 250, 0.1) 100%)"
               : "rgba(153, 204, 255, 0)",
-            boxShadow: isHovered 
-              ? "inset 0 0 30px rgba(59, 130, 246, 0.3)" 
-              : "none"
+            boxShadow: isHovered
+              ? "inset 0 0 30px rgba(59, 130, 246, 0.3)"
+              : "none",
           }}
         />
-        
+
         {/* Glow effect during animation */}
         {isAnimating && isHovered && (
           <span className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-500/20 via-blue-400/10 to-blue-500/20 animate-pulse pointer-events-none" />
@@ -216,7 +216,7 @@ export default function Hero() {
   return (
     <section className="relative w-full min-h-screen overflow-hidden">
       {/* Full width background */}
-      <div className="absolute inset-0 w-full bg-gradient-to-br from-[#0d1117] via-black to-[#0a0e1a]" />
+      <div className="absolute inset-0 w-full bg-[linear-gradient(to_top_right,_#0b1224_10%,_#050505_25%,_#050505_45%,_#0b1224_100%)]" />
 
       {/* HERO SECTION with Mouse Effect - FULL WIDTH */}
       <div className="relative z-10 w-full min-h-screen flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 text-center">
@@ -235,16 +235,19 @@ export default function Hero() {
           </div>
 
           {/* Heading 2 - Scalable Digital Products - Proper spacing */}
-          <div className="mb-16">
+          <div className="mb-1">
             <h2 className="text-5xl md:text-6xl lg:text-7xl font-light text-white leading-[0.9]">
-              <em className="font-normal italic text-white">Scalable Digital Products</em>
+              <em className="font-normal italic text-white">
+                Scalable Digital Products
+              </em>
             </h2>
           </div>
 
           {/* Description - Proper spacing and alignment */}
           <div className="mb-20">
             <p className="text-xl md:text-2xl lg:text-3xl text-white/80 font-light tracking-wide max-w-4xl mx-auto leading-relaxed">
-              We design and develop high-performance web and mobile solutions built for growth.
+              We design and develop high-performance web and mobile solutions
+              built for growth.
             </p>
           </div>
 
@@ -323,6 +326,5 @@ export default function Hero() {
         </div>
       </div>
     </section>
-    
   );
 }

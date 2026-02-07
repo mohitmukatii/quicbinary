@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { FaRocket, FaBuilding, FaChartLine, FaGlobeAmericas } from "react-icons/fa";
 
-const faqs = [
+const aboutFaqs = [
   {
     question: "What's your typical process for a new project?",
     answer:
@@ -192,6 +192,7 @@ function StatisticsGrid() {
       icon: <FiTarget className="w-10 h-10" />,
       color: "text-[#003BD7]",
       bgColor: "bg-gray-900 rounded-full",
+      borderColor: "border-b-[#003BD7]",
     },
     {
       value: "8",
@@ -201,6 +202,7 @@ function StatisticsGrid() {
       icon: <FiUsers className="w-10 h-10" />,
       color: "text-[#003BD7]",
       bgColor: "bg-gray-900 rounded-full",
+      borderColor: "border-b-[3652A3]",
     },
     {
       value: "23",
@@ -208,8 +210,9 @@ function StatisticsGrid() {
       label: "Countries Served",
       description: "Global reach with international client base",
       icon: <FiGlobe className="w-10 h-10" />,
-      color: "text-[#003BD7]",
+      color: "text-[#003BD7]", 
       bgColor: "bg-gray-900 rounded-full",
+      borderColor: "border-b-[#3652A3]",
     },
     {
       value: "80",
@@ -217,8 +220,9 @@ function StatisticsGrid() {
       label: "Projects Delivered",
       description: "Successful digital transformations completed",
       icon: <LuMousePointerClick className="w-10 h-10" />,
-      color: "text-[#003BD7]",
+      color: "text-[#003BD7]", 
       bgColor: "bg-gray-900 rounded-full",
+      borderColor: "border-b-[3652A3]", 
     },
     {
       value: "13",
@@ -226,17 +230,19 @@ function StatisticsGrid() {
       label: "Industry Verticals",
       description: "Diverse industry expertise and solutions",
       icon: <LiaIndustrySolid className="w-10 h-10" />,
-      color: "text-[#003BD7]",
+      color: "text-[#003BD7]", 
       bgColor: "bg-gray-900 rounded-full",
+      borderColor: "border-b-[#3652A3]", 
     },
     {
       value: "47",
       plus: "+",
       label: "Development Staff",
       description: "Skilled professionals driving innovation",
-      icon: <FiCode className="w-10 h-10" />,
-      color: "text-[#003BD7]",
+      icon: <FiCode className="w-10 h-10 text-[#003BD7]" />,
+      color: "text-[#003BD7]", 
       bgColor: "bg-gray-900 rounded-full",
+      borderColor: "border-b-[#003BD7]", 
     },
   ];
 
@@ -246,8 +252,8 @@ function StatisticsGrid() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
           {stats.map((stat, index) => (
             <div key={index} className="group">
-              {/* Left-Aligned Card Container */}
-              <div className="bg-gray-900/40 rounded-4xl p-8 border-b-3 border-[#003BD7] flex flex-col text-left">
+              {/* Left-Aligned Card Container with dynamic border color */}
+              <div className={`bg-gray-900/40 rounded-4xl p-8 border-b-3 ${stat.borderColor} flex flex-col text-left`}>
                 {/* ICON (Top Left) */}
                 <div className={`mb-6 p-4 ${stat.bgColor} w-fit`}>
                   <div className={stat.color}>{stat.icon}</div>
@@ -259,7 +265,7 @@ function StatisticsGrid() {
                   <div className="text-5xl md:text-6xl text-white">
                     {stat.value}
                   </div>
-                  {/* Blue symbol (% or +) */}
+                  {/* Colored symbol (% or +) */}
                   <div className={`text-6xl md:text-6xl ${stat.color} ml-1`}>
                     {stat.percentage || stat.plus}
                   </div>
@@ -320,14 +326,143 @@ function ServiceSlider() {
   );
 }
 
-export default function Page() {
-  // Add useState for FAQ section
+// FAQ Component - From the first code you provided
+function FAQSection() {
   const [activeIndex, setActiveIndex] = useState<number | null>(0);
 
+  const faqs = [
+    {
+      question: "What's your typical process for a new project?",
+      answer:
+        "We start with a discovery phase to understand your goals, audience, and competitors. From there, we move into strategy, design, and development—keeping you in the loop at every stage. Each service has its own milestones, but collaboration is constant throughout.",
+    },
+    {
+      question: "How do you ensure the project stays on track?",
+      answer:
+        "We align business goals with technical execution to ensure scalable and future-ready digital solutions through weekly check-ins and agile methodology.",
+    },
+    {
+      question: "Do you provide post-launch support?",
+      answer:
+        "Yes, we provide continuous support, optimization, and maintenance after project delivery to ensure your platform evolves with your business.",
+    },
+    {
+      question: "What is the typical timeline for a project?",
+      answer:
+        "Project timelines depend on scope and complexity, but we always deliver within agreed milestones, typically ranging from 4 to 12 weeks.",
+    },
+  ];
+
+  return (
+    <section className="bg-black px-6 py-[80px]">
+      {/* HEADER */}
+      <div className="w-full mb-[70px]">
+        <div className="flex items-center gap-3 mb-6">
+          <Image src="/logo.png" alt="logo" width={24} height={24} />
+          <span className="tracking-[0.2em] text-white uppercase text-sm font-medium">
+            FAQs
+          </span>
+        </div>
+
+        <h2 className="text-[48px] md:text-[56px] text-white leading-[1.1] font-normal">
+          Frequently Asked <br /> Questions
+        </h2>
+      </div>
+
+      {/* FAQ LIST */}
+      <div className="w-full flex flex-col gap-5">
+        {faqs.map((faq, index) => {
+          const isActive = activeIndex === index;
+
+          return (
+            <div
+              key={index}
+              onClick={() => setActiveIndex(isActive ? null : index)}
+              className="
+                group
+                cursor-pointer
+                flex
+                rounded-[40px]
+                overflow-hidden
+                border border-white/[0.08]
+                transition-all duration-500
+                hover:border-white/[0.2]
+              "
+            >
+              {/* LEFT NUMBER PILL */}
+              <div
+                className={`
+                  w-[70px] md:w-[90px]
+                  flex items-center justify-center
+                  text-[18px] font-medium
+                  rounded-l-[40px]
+                  border-r border-white/[0.08]
+                  transition-colors duration-500
+                  ${isActive ? "bg-[#1E1E1E] text-[#99CCFF]" : "bg-[#1E1E1E] text-white"}
+                `}
+              >
+                {String(index + 1).padStart(2, "0")}
+              </div>
+
+              {/* RIGHT CONTENT (The Running Animation Area) */}
+              <div
+                className={`
+                  flex-1
+                  px-8 py-7
+                  transition-all duration-500 ease-in-out
+                  ${isActive ? "bg-[#99CCFF]" : "bg-[#1E1E1E]"}
+                `}
+              >
+                {/* QUESTION ROW */}
+                <div className="flex items-center justify-between gap-6">
+                  <h4
+                    className={`text-[16px] md:text-[18px] font-medium transition-colors duration-500 ${
+                      isActive ? "text-black" : "text-white"
+                    }`}
+                  >
+                    {faq.question}
+                  </h4>
+
+                  <div
+                    className={`text-[50px] font-light transition-transform duration-500 ${
+                      isActive ? "rotate-45 text-black" : "rotate-0 text-white"
+                    }`}
+                  >
+                    +
+                  </div>
+                </div>
+
+                {/* ANSWER - ANIMATED CONTAINER */}
+                <div
+                  className={`
+                    grid transition-all duration-500 ease-in-out
+                    ${isActive ? "grid-rows-[1fr] opacity-100 mt-4" : "grid-rows-[0fr] opacity-0 mt-0"}
+                  `}
+                >
+                  <div className="overflow-hidden">
+                    <p
+                      className={`text-[15px] leading-relaxed max-w-[800px] ${
+                        isActive ? "text-black/80" : "text-transparent"
+                      }`}
+                    >
+                      {faq.answer}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </section>
+  );
+}
+
+export default function Page() {
   return (
     <main className="bg-black text-white">
       {/* HERO SECTION */}
-      <section className="relative pt-28 pb-40 text-center overflow-hidden">
+      <section className="relative mt-50 pb-40 text-center overflow-hidden">
         <div className="relative z-10 max-w-5xl mx-auto px-4">
           <div className="flex items-center justify-center gap-2 text-xl text-gray-300">
             <span className="w-3 h-3 rounded-full bg-blue-500" />
@@ -349,7 +484,7 @@ export default function Page() {
         />
       </section>
    
-{/* SEPARATOR LINE */}
+      {/* SEPARATOR LINE */}
       <div className="w-full px-2 ">
         <div className="border-t border-white/20 w-full"></div>
       </div>
@@ -390,7 +525,6 @@ export default function Page() {
           </div>
         </div>
       </section>
-
 
       {/* STATISTICS GRID - Added after BUILDING DIGITAL PRODUCTS */}
       <StatisticsGrid />
@@ -498,97 +632,8 @@ export default function Page() {
         <div className="border-t border-white/20 w-full"></div>
       </div>
 
-      {/* FAQ SECTION - Added exactly as provided, after MEMBERS section */}
-      <section className="bg-black px-6 py-[80px]">
-        {/* HEADER */}
-        <div className=" w-full mb-[70px]">
-          <div className="flex items-center gap-3 mb-6">
-            {/* LOGO */}
-            <Image src="/logo.png" alt="logo" width={18} height={18} />
-            <span className="tracking-widest text-white uppercase text-2xl">
-              FAQs
-            </span>
-          </div>
-
-          <h2 className="text-[56px] text-white leading-[1.1] font-normal">
-            Frequently Asked <br /> Questions
-          </h2>
-        </div>
-
-        {/* FAQ LIST */}
-        <div className="w-full flex flex-col gap-5">
-          {faqs.map((faq, index) => {
-            const isActive = activeIndex === index;
-
-            return (
-              <div
-                key={index}
-                onClick={() => setActiveIndex(isActive ? null : index)}
-                className="
-                  cursor-pointer
-                  flex
-                  rounded-[40px]
-                  overflow-hidden
-                  border border-white/[0.08]
-                  transition-all duration-300
-                  hover:border-white/[0.2]
-                "
-              >
-                {/* LEFT NUMBER PILL (ALWAYS DARK) */}
-                <div
-                  className="
-                    w-[90px]
-                    flex items-center justify-center
-                    bg-white/[0.04]
-                    text-[#a9d4ff]
-                    text-[18px]
-                    rounded-l-[40px]
-                    border-r border-white/[0.08]
-                  "
-                >
-                  {String(index + 1).padStart(2, "0")}
-                </div>
-
-                {/* RIGHT CONTENT */}
-                <div
-                  className={`
-                    flex-1
-                    px-8 py-6
-                    transition-all duration-300
-                    ${isActive ? "bg-[#a9d4ff]" : "bg-white/[0.04]"}
-                  `}
-                >
-                  {/* QUESTION ROW */}
-                  <div className="flex items-center gap-6">
-                    <h4
-                      className={`flex-1 text-[16px] ${
-                        isActive ? "text-black" : "text-white"
-                      }`}
-                    >
-                      {faq.question}
-                    </h4>
-
-                    <span
-                      className={`text-[26px] ${
-                        isActive ? "text-black" : "text-white"
-                      }`}
-                    >
-                      {isActive ? "×" : "+"}
-                    </span>
-                  </div>
-
-                  {/* ANSWER */}
-                  {isActive && (
-                    <p className="mt-4 text-[15px] text-black/70 leading-relaxed max-w-[720px]">
-                      {faq.answer}
-                    </p>
-                  )}
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </section>
+      {/* FAQ SECTION - ADDED HERE exactly as from the first code */}
+      <FAQSection />
     </main>
   );
 }

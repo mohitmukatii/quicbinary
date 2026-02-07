@@ -4,11 +4,11 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import styles from "../../styles/common.module.css";
+import { FiMenu, FiX } from "react-icons/fi";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
-  const [activeLink, setActiveLink] = useState<string | null>(null);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const pathname = usePathname();
 
   useEffect(() => {
@@ -20,142 +20,148 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Helper to check if the link is currently active
+  const isActive = (path: string) => pathname === path;
+
+  // Close mobile menu on route change
   useEffect(() => {
-    // Set active link based on current path
-    if (pathname === "/") setActiveLink("home");
-    else if (pathname === "/about") setActiveLink("about");
-    else if (pathname === "/services") setActiveLink("services");
-    else if (pathname === "/work") setActiveLink("work");
-    else if (pathname === "/say-hello") setActiveLink("hello");
+    setIsMobileMenuOpen(false);
   }, [pathname]);
 
-  const handleLinkClick = (link: string) => {
-    setActiveLink(link);
-  };
-
-  const isLinkActive = (link: string) => {
-    return activeLink === link;
-  };
-
   return (
-    <header className={`${styles.navbar} w-full fixed top-0 left-0 z-50 transition-all duration-300 ${
+    <>
+      <header className={`w-full fixed top-0 left-0 z-50 transition-all bg-black/95 border-b border-white/10 duration-300 ${
       scrolled 
-        ? 'bg-black/95 border-b border-white/10 py-4 shadow-lg' 
-        : 'bg-transparent py-1'
+        ? 'bg-black/95 border-b border-white/10 py-2 md:py-4' 
+        : 'bg-transparent py-3 md:py-5'
     }`}>
-      <div className={`${styles.navContainer} w-full max-w-[1920px] mx-auto px-6 lg:px-12 xl:px-24`}>
-        {/* LOGO SECTION */}
-        <div className="flex items-center gap-4">
-          {/* LOGO IMAGE */}
-          <div className="w-10 h-10 relative">
-            <Image
-              src="/logo.png"
-              alt="Quicbinary Logo"
-              fill
-              className="object-contain"
-              priority
-            />
-          </div>
+        <div className="w-full px-4 sm:px-6 lg:px-12 flex items-center justify-between">
           
-          {/* LOGO TEXT - No hover effects */}
-          <Link 
-            href="/" 
-            className={`${styles.logo} flex items-center gap-3`}
-            onClick={() => handleLinkClick("home")}
-          >
-            <span className="text-3xl font-bold tracking-tight text-white">
-              Quicbinary
-            </span>
+          {/* LOGO SECTION - IMAGE ONLY */}
+          <Link href="/" className="flex items-center z-50">
+            <div className="relative w-[180px] h-[60px] md:w-[250px] md:h-[90px]">
+              <Image
+                src="/quicbinary logo.png"
+                alt="Quicbinary Logo"
+                fill
+                className="object-contain object-left"
+                priority
+              />
+            </div>
           </Link>
+
+          {/* DESKTOP NAV LINKS */}
+          <nav className="hidden md:flex items-center gap-2 md:gap-4">
+            <Link 
+              href="/about" 
+              className={`px-8 md:px-10 py-1 md:py-2 rounded-full text-lg md:text-[25px] transition-all duration-300 ${
+                isActive("/about")
+                  ? 'bg-[#99CCFF] text-black font-medium' 
+                  : 'text-white hover:text-white/70'
+              }`}
+            >
+              About
+            </Link>
+
+            <Link 
+              href="/services" 
+              className={`px-8 md:px-10 py-1 md:py-2 rounded-full text-lg md:text-[25px] transition-all duration-300 ${
+                isActive("/services")
+                  ? 'bg-[#99CCFF] text-black font-medium' 
+                  : 'text-white hover:text-white/70'
+              }`}
+            >
+              Services
+            </Link>
+
+            <Link 
+              href="/work" 
+              className={`px-8 md:px-10 py-1 md:py-2 rounded-full text-lg md:text-[25px] transition-all duration-300 ${
+                isActive("/work")
+                  ? 'bg-[#99CCFF] text-black font-medium' 
+                  : 'text-white hover:text-white/70'
+              }`}
+            >
+              Work
+            </Link>
+
+            <Link 
+              href="/say-hello" 
+              className={`px-8 md:px-10 py-1 md:py-2 rounded-full text-lg md:text-[25px] transition-all duration-300 ${
+                isActive("/say-hello")
+                  ? 'bg-[#99CCFF] text-black font-medium' 
+                  : 'text-white hover:text-white/70'
+              }`}
+            >
+              Say Hello
+            </Link>
+          </nav>
+
+          {/* MOBILE MENU BUTTON */}
+          <button
+            className="md:hidden text-white text-2xl z-50 p-2"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            aria-label="Toggle menu"
+          >
+            {isMobileMenuOpen ? <FiX /> : <FiMenu />}
+          </button>
         </div>
 
-        {/* NAV LINKS - Only active link shows blue color */}
-        <nav className={styles.navLinks}>
-          <Link 
-            href="/about" 
-            className="relative px-4 py-2 group"
-            onClick={() => handleLinkClick("about")}
-          >
-            <span className={`relative z-10 transition-colors duration-300 ${
-              isLinkActive("about")
-                ? 'text-white font-medium' 
-                : 'text-gray-400'
-            }`}>
-              About
-            </span>
-            
-            {/* Blue background only for active link */}
-            <span className={`absolute inset-0 bg-[#99CCFF] rounded-full transition-all duration-300 ease-out ${
-              isLinkActive("about")
-                ? 'scale-100 opacity-100' 
-                : 'scale-0 opacity-0'
-            }`} />
-          </Link>
+        {/* MOBILE MENU OVERLAY */}
+        {isMobileMenuOpen && (
+          <div className="md:hidden fixed inset-0 bg-black/95 z-40 pt-20">
+            <nav className="flex flex-col items-center justify-center h-full space-y-6">
+              <Link 
+                href="/about" 
+                className={`px-10 py-3 rounded-full text-2xl transition-all duration-300 w-48 text-center ${
+                  isActive("/about")
+                    ? 'bg-[#99CCFF] text-black font-medium' 
+                    : 'text-white hover:bg-white/10'
+                }`}
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                About
+              </Link>
 
-          <Link 
-            href="/services" 
-            className="relative px-4 py-2 group"
-            onClick={() => handleLinkClick("services")}
-          >
-            <span className={`relative z-10 transition-colors duration-300 ${
-              isLinkActive("services")
-                ? 'text-white font-medium' 
-                : 'text-gray-400'
-            }`}>
-              Services
-            </span>
-            
-            {/* Blue background only for active link */}
-            <span className={`absolute inset-0 bg-[#99CCFF] rounded-full transition-all duration-300 ease-out ${
-              isLinkActive("services")
-                ? 'scale-100 opacity-100' 
-                : 'scale-0 opacity-0'
-            }`} />
-          </Link>
+              <Link 
+                href="/services" 
+                className={`px-10 py-3 rounded-full text-2xl transition-all duration-300 w-48 text-center ${
+                  isActive("/services")
+                    ? 'bg-[#99CCFF] text-black font-medium' 
+                    : 'text-white hover:bg-white/10'
+                }`}
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Services
+              </Link>
 
-          <Link 
-            href="/work" 
-            className="relative px-4 py-2 group"
-            onClick={() => handleLinkClick("work")}
-          >
-            <span className={`relative z-10 transition-colors duration-300 ${
-              isLinkActive("work")
-                ? 'text-white font-medium' 
-                : 'text-gray-400'
-            }`}>
-              Work
-            </span>
-            
-            {/* Blue background only for active link */}
-            <span className={`absolute inset-0 bg-[#99CCFF] rounded-full transition-all duration-300 ease-out ${
-              isLinkActive("work")
-                ? 'scale-100 opacity-100' 
-                : 'scale-0 opacity-0'
-            }`} />
-          </Link>
+              <Link 
+                href="/work" 
+                className={`px-10 py-3 rounded-full text-2xl transition-all duration-300 w-48 text-center ${
+                  isActive("/work")
+                    ? 'bg-[#99CCFF] text-black font-medium' 
+                    : 'text-white hover:bg-white/10'
+                }`}
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Work
+              </Link>
 
-          <Link 
-            href="/say-hello" 
-            className="relative px-4 py-2 group"
-            onClick={() => handleLinkClick("hello")}
-          >
-            <span className={`relative z-10 transition-colors duration-300 ${
-              isLinkActive("hello")
-                ? 'text-white font-medium' 
-                : 'text-gray-400'
-            }`}>
-              Say Hello
-            </span>
-            
-            {/* Blue background only for active link */}
-            <span className={`absolute inset-0 bg-[#99CCFF] rounded-full transition-all duration-300 ease-out ${
-              isLinkActive("hello")
-                ? 'scale-100 opacity-100' 
-                : 'scale-0 opacity-0'
-            }`} />
-          </Link>
-        </nav>
-      </div>
-    </header>
+              <Link 
+                href="/say-hello" 
+                className={`px-10 py-3 rounded-full text-2xl transition-all duration-300 w-48 text-center ${
+                  isActive("/say-hello")
+                    ? 'bg-[#99CCFF] text-black font-medium' 
+                    : 'text-white hover:bg-white/10'
+                }`}
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Say Hello
+              </Link>
+            </nav>
+          </div>
+        )}
+      </header>
+    </>
   );
 }
